@@ -1,0 +1,222 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const stackCategories = [
+  {
+    category: 'Hardware & Sistema',
+    items: [
+      {
+        title: 'Lenovo ThinkPad T480s (Dual-boot)',
+        desc: 'Mi máquina principal. Configurada con un dual-boot extremo gestionado mediante reducciones de partición en caliente con Diskpart.',
+        tags: ['Windows 11', 'Omarchy Linux', 'PowerShell'],
+      },
+      {
+        title: 'Automatización de Entorno',
+        desc: 'Utilizo scripts híbridos de Batch y PowerShell integrados con Winget y Regex para mantener mis herramientas actualizadas sin romper dependencias críticas como DAWs.',
+        tags: ['Winget', 'Batch', 'Automation'],
+      },
+    ],
+  },
+  {
+    category: 'Desarrollo & IA',
+    items: [
+      {
+        title: 'Ingeniería de Software',
+        desc: 'Desarrollo enfocado en rendimiento arquitectónico multihilo y aplicaciones full-stack.',
+        tags: ['C++17', 'JUCE', 'React', 'Node.js', 'Django', 'MySQL'],
+      },
+      {
+        title: 'Inteligencia Artificial Local',
+        desc: 'Integración de modelos en entornos de escritorio para plugins creativos, priorizando el procesamiento offline y la privacidad.',
+        tags: ['llama.cpp', 'ONNX Runtime', 'Jev Model JSON'],
+      },
+    ],
+  },
+  {
+    category: 'Diseño UI/UX & Motion',
+    items: [
+      {
+        title: 'Diseño de Producto e Interfaces',
+        desc: 'Herramientas para mapeo de flujos, sistemas de diseño y prototipado visual.',
+        tags: ['Figma', 'Affinity Suite', 'Adobe Creative Suite'],
+      },
+      {
+        title: '3D, Video & Audio',
+        desc: 'Pipeline de producción audiovisual para gráficos en movimiento, composición y diseño de sonido.',
+        tags: ['After Effects', 'Unreal Engine 5', 'Blender', 'DaVinci Resolve'],
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Uses & Stack — Amauris Willmore"
+  description="Hardware, software y herramientas que utilizo a diario para diseño, desarrollo y producción multimedia."
+>
+  <div class="page-intro">
+    <div class="breadcrumbs">
+      <a href={`${base}/`}>inicio</a>
+      <span class="sep">/</span>
+      <span>uses</span>
+    </div>
+    <h1 class="page-title">Stack &amp; Herramientas</h1>
+    <p class="subtitle">
+      Un resumen del hardware, software y tecnologías que utilizo a diario para diseño, desarrollo y producción multimedia.
+    </p>
+  </div>
+
+  <div class="stack-sections">
+    {stackCategories.map(cat => (
+      <section class="stack-section">
+        <h2 class="section-title">{cat.category}</h2>
+        <ul class="stack-list">
+          {cat.items.map(item => (
+            <li class="stack-item">
+              <span class="stack-item-title">{item.title}</span>
+              <p class="stack-item-desc">{item.desc}</p>
+              {item.tags && item.tags.length > 0 && (
+                <div class="tags-row">
+                  {item.tags.map(tag => (
+                    <span class="tag-chip">{tag}</span>
+                  ))}
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+
+  <div class="podcast-banner">
+    <span class="podcast-title">Vitamina A - The Show</span>
+    <span class="podcast-platform">Spotify</span>
+    <a class="podcast-link" href="https://open.spotify.com/show/3NXVANQZm2sh5C669LGWs9" target="_blank" rel="noopener noreferrer">escuchar →</a>
+  </div>
+</Layout>
+
+<style>
+  .page-intro {
+    margin-bottom: 40px;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .breadcrumbs .sep {
+    opacity: 0.5;
+  }
+  .page-title {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    margin: 0;
+    color: var(--body-ink);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+
+  .stack-sections {
+    display: grid;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+  .stack-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 20px;
+  }
+  .stack-item {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .stack-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .stack-item-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .stack-item-desc {
+    margin: 0 0 12px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--body-ink);
+  }
+  .tags-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag-chip {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 2px 7px;
+    border-radius: 4px;
+  }
+
+  .podcast-banner {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .podcast-title {
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .podcast-platform {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  .podcast-link {
+    margin-left: auto;
+    color: #827629;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  :root[data-theme='dark'] .podcast-link {
+    color: var(--accent);
+  }
+</style>

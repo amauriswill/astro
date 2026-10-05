@@ -1,0 +1,263 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Get all posts, sort by pubDate desc
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts
+  .filter(p => p.data.status === 'published')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+
+// Format date helper: "Sep 2026"
+function formatDate(date: Date) {
+  return date.toLocaleDateString('es-ES', {
+    month: 'short',
+    year: 'numeric',
+  }).replace('.', '');
+}
+
+// Extract unique categories
+const categories = Array.from(new Set(publishedPosts.map(p => p.data.category).filter(Boolean))) as string[];
+---
+
+<Layout
+  title="Blog & Notas — Amauris Willmore"
+  description="Artículos, notas técnicas sobre desarrollo C++, diseño de producto UI/UX y sistemas."
+  activeNav="blog"
+>
+  <div class="blog-header">
+    <div class="breadcrumbs">
+      <a href={`${base}/`}>inicio</a>
+      <span class="sep">/</span>
+      <span>blog</span>
+    </div>
+
+    <div class="header-row">
+      <div>
+        <h1 class="page-title">Blog & Notas</h1>
+        <p class="page-desc">
+          Reflexiones sobre ingeniería de software, arquitectura UI/UX, herramientas nativas y sistemas.
+        </p>
+      </div>
+    </div>
+
+    {categories.length > 0 && (
+      <div class="category-chips">
+        <button class="chip active" data-filter="all">Todos ({publishedPosts.length})</button>
+        {categories.map(cat => (
+          <button class="chip" data-filter={cat}>{cat}</button>
+        ))}
+      </div>
+    )}
+  </div>
+
+  <section class="posts-section" aria-label="Listado de artículos">
+    <ul class="rows notes" id="post-list">
+      {publishedPosts.map(post => (
+        <li class="row post-item" data-category={post.data.category || ''}>
+          <div class="post-title-wrap">
+            <a href={`${base}/blog/${post.id}/`} class="post-title">{post.data.title}</a>
+            {post.data.category && (
+              <span class="post-cat-pill">{post.data.category}</span>
+            )}
+          </div>
+          <span class="rule" aria-hidden="true"></span>
+          <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+        </li>
+      ))}
+    </ul>
+
+    {publishedPosts.length === 0 && (
+      <div class="empty-state">
+        <p>Aún no hay publicaciones.</p>
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .blog-header {
+    margin-bottom: 38px;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .breadcrumbs .sep {
+    opacity: 0.5;
+  }
+
+  .header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .page-title {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .page-desc {
+    margin: 0;
+    color: var(--body-ink);
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+
+
+  .category-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+  .chip {
+    padding: 4px 12px;
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease-phi);
+  }
+  .chip:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .chip.active {
+    background: var(--ink);
+    color: var(--page);
+    border-color: var(--ink);
+  }
+
+  .posts-section {
+    margin-top: 10px;
+  }
+  .rows {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .row {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .post-title-wrap {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .post-title {
+    color: var(--ink);
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .row a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--muted);
+    text-underline-offset: 4px;
+  }
+  .post-cat-pill {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 1px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .row .rule {
+    flex: 1 1 auto;
+    min-width: 12px;
+    height: 1px;
+    background: var(--rule);
+    transform: translateY(-4px);
+  }
+  .row time {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .empty-state {
+    padding: 40px 0;
+    text-align: center;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+  }
+  .empty-state a {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .header-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .row {
+      gap: 9px;
+      font-size: 13px;
+    }
+    .row time {
+      font-size: 11px;
+    }
+    .post-cat-pill {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Simple category filtering
+  const chips = document.querySelectorAll<HTMLButtonElement>('.chip');
+  const postItems = document.querySelectorAll<HTMLLIElement>('.post-item');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+
+      const filter = chip.getAttribute('data-filter');
+      postItems.forEach(item => {
+        const cat = item.getAttribute('data-category');
+        if (filter === 'all' || cat === filter) {
+          item.style.display = 'flex';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

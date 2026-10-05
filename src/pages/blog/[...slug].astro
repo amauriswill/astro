@@ -1,0 +1,287 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function formatDateFull(date: Date) {
+  return date.toLocaleDateString('es-ES', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+// Calculate reading time from raw body if available
+const words = (post.body || '').split(/\s+/).filter(Boolean).length;
+const readTime = Math.max(1, Math.ceil(words / 200));
+---
+
+<Layout
+  title={`${post.data.title} — Amauris Willmore`}
+  description={post.data.description}
+  activeNav="blog"
+>
+  <article class="article-container">
+    <div class="article-top-bar">
+      <a href={`${base}/blog/`} class="back-link">
+        <span aria-hidden="true">←</span>
+        <span>Volver a notas</span>
+      </a>
+
+
+    </div>
+
+    <header class="article-header">
+      <div class="meta-row">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {formatDateFull(post.data.pubDate)}
+        </time>
+        <span class="dot" aria-hidden="true">•</span>
+        <span>{readTime} min de lectura</span>
+        {post.data.category && (
+          <>
+            <span class="dot" aria-hidden="true">•</span>
+            <span class="cat-tag">{post.data.category}</span>
+          </>
+        )}
+      </div>
+
+      <h1 class="article-title">{post.data.title}</h1>
+
+      {post.data.description && (
+        <p class="article-lead">{post.data.description}</p>
+      )}
+
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="tags-list">
+          {post.data.tags.map(tag => (
+            <span class="tag-badge">#{tag}</span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    <footer class="article-footer">
+      <div class="footer-cta">
+        <p>
+          Escrito por <strong>Amauris Willmore</strong>. ¿Comentarios o ideas sobre este tema?
+        </p>
+        <div class="footer-links">
+          <a href="mailto:amauriswillwork@gmail.com" class="action-btn">Escríbeme por email</a>
+
+        </div>
+      </div>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .article-container {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  .article-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  .back-link {
+    color: var(--muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color var(--t-fast) var(--ease-phi);
+  }
+  .back-link:hover {
+    color: var(--ink);
+  }
+
+  .article-header {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 28px;
+  }
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .cat-tag {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .dot {
+    opacity: 0.4;
+  }
+
+  .article-title {
+    margin: 0 0 16px;
+    font-size: clamp(26px, 4vw, 34px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .article-lead {
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--body-ink);
+  }
+
+  .tags-list {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .tag-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Prose typography styling */
+  .prose {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--body-ink);
+  }
+  .prose :global(p) {
+    margin: 0 0 22px;
+  }
+  .prose :global(h2) {
+    margin: 44px 0 16px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .prose :global(h3) {
+    margin: 32px 0 12px;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .prose :global(ul), .prose :global(ol) {
+    margin: 0 0 24px;
+    padding-left: 24px;
+  }
+  .prose :global(li) {
+    margin-bottom: 8px;
+  }
+  .prose :global(strong) {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .prose :global(em) {
+    color: var(--ink);
+  }
+  .prose :global(blockquote) {
+    margin: 28px 0;
+    padding: 12px 20px;
+    border-left: 3px solid var(--ink);
+    background: var(--surface);
+    font-style: italic;
+    color: var(--body-ink);
+  }
+  .prose :global(code) {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.9em;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: var(--ink);
+  }
+  .prose :global(pre) {
+    margin: 26px 0;
+    padding: 16px 20px;
+    border-radius: 8px;
+    background: #121312 !important;
+    color: #e5e5e0 !important;
+    overflow-x: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    border: 1px solid var(--rule);
+  }
+  .prose :global(pre code) {
+    background: transparent !important;
+    border: 0 !important;
+    padding: 0 !important;
+    color: inherit !important;
+    font-size: inherit;
+  }
+  .prose :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-footer {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+  }
+  .footer-cta {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 24px;
+  }
+  .footer-cta p {
+    margin: 0 0 16px;
+    font-size: 15px;
+  }
+  .footer-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .action-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    background: var(--ink);
+    color: var(--page);
+    font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: opacity var(--t-fast) var(--ease-phi);
+  }
+  .action-btn:hover {
+    color: var(--page);
+    opacity: 0.9;
+  }
+
+</style>

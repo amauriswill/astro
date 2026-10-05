@@ -1,0 +1,199 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const episodes = [
+  {
+    title: 'Marketing artístico - Desarrollo de personaje',
+    date: 'Feb 2025',
+    duration: '8:38',
+    spotifyEpisodeId: '0bZRQ24fZotTxXX3BsBNGP',
+    url: 'https://open.spotify.com/episode/0bZRQ24fZotTxXX3BsBNGP',
+  },
+];
+---
+
+<Layout
+  title="Podcast — Amauris Willmore"
+  description="Conversaciones sobre ingeniería de software, diseño de producto y producción audiovisual."
+  activeNav="podcast"
+>
+  <div class="page-intro">
+    <div class="breadcrumbs">
+      <a href={`${base}/`}>inicio</a>
+      <span class="sep">/</span>
+      <span>podcast</span>
+    </div>
+    <h1 class="page-title">Podcast</h1>
+    <p class="subtitle">
+      Conversaciones sobre ingeniería de software, diseño de producto y producción audiovisual.
+    </p>
+  </div>
+
+  <section class="podcast-section">
+    <h2 class="section-title">El show</h2>
+    <div class="show-card">
+      <div class="show-meta">
+        <a href="https://open.spotify.com/show/3NXVANQZm2sh5C669LGWs9" target="_blank" rel="noopener noreferrer" class="show-name">
+          Vitamina A - The Show
+        </a>
+        <span class="show-badge">Spotify</span>
+      </div>
+      <iframe
+        class="spotify-frame"
+        src="https://open.spotify.com/embed/show/3NXVANQZm2sh5C669LGWs9"
+        width="100%"
+        height="152"
+        frameborder="0"
+        allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        loading="lazy"
+        title="Vitamina A - The Show en Spotify"
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="episodes-section">
+    <h2 class="section-title">Episodios recientes</h2>
+    <ul class="episodes-list">
+      {episodes.map(ep => (
+        <li class="episode-item">
+          <div class="episode-header">
+            <a href={ep.url} target="_blank" rel="noopener noreferrer" class="episode-title">
+              {ep.title}
+            </a>
+            <span class="episode-meta">{ep.date} • {ep.duration}</span>
+          </div>
+          <iframe
+            class="spotify-frame"
+            src={`https://open.spotify.com/embed/episode/${ep.spotifyEpisodeId}`}
+            width="100%"
+            height="152"
+            frameborder="0"
+            allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title={`${ep.title} en Spotify`}
+          ></iframe>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Layout>
+
+<style>
+  .page-intro {
+    margin-bottom: 36px;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .breadcrumbs .sep {
+    opacity: 0.5;
+  }
+  .page-title {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    margin: 0;
+    color: var(--body-ink);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+
+  .section-title {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 0 0 20px;
+  }
+
+  .podcast-section {
+    margin-bottom: 40px;
+  }
+  .show-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .show-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .show-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .show-name:hover {
+    text-decoration: underline;
+  }
+  .show-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .episodes-section {
+    margin-bottom: 40px;
+  }
+  .episodes-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 24px;
+  }
+  .episode-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .episode-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .episode-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .episode-title:hover {
+    text-decoration: underline;
+  }
+  .episode-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .spotify-frame {
+    border-radius: 12px;
+    border: 0;
+    background: transparent;
+  }
+</style>

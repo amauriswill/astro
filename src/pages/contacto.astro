@@ -1,0 +1,179 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const channels = [
+  { name: 'email', handle: 'amauriswillwork@gmail.com', href: 'mailto:amauriswillwork@gmail.com' },
+  { name: 'github', handle: '@amauriswill', href: 'https://github.com/amauriswill' },
+  { name: 'linkedin', handle: 'in/amauriswill', href: 'https://www.linkedin.com/in/amauriswill/' },
+  { name: 'behance', handle: 'behance.net/amauriswill', href: 'https://behance.net/amauriswill' },
+  { name: 'youtube', handle: '@amaurisfolio', href: 'https://youtube.com/@amaurisfolio' },
+];
+---
+
+<Layout
+  title="Contacto — Amauris Willmore"
+  description="Canales de contacto y proyectos: ingeniería de producto, interfaces y piezas audiovisuales."
+  activeNav="contacto"
+>
+  <div class="page-intro">
+    <div class="breadcrumbs">
+      <a href={`${base}/`}>inicio</a>
+      <span class="sep">/</span>
+      <span>contacto</span>
+    </div>
+    <h1 class="page-title">Contacto</h1>
+    <p class="subtitle">
+      ¿Un proyecto, una colaboración o simplemente saludar? Tomo pocos proyectos a la vez: normalmente ingeniería de producto, interfaces y piezas audiovisuales. Respondo en un par de días laborables.
+    </p>
+
+    <div class="cta-wrap">
+      <a class="direct-email-btn" href="mailto:amauriswillwork@gmail.com">
+        <span>» escríbeme un correo</span>
+      </a>
+    </div>
+  </div>
+
+  <section class="channels-section" aria-label="Canales directos">
+    <h2 class="section-title">Canales</h2>
+    <ul class="rows">
+      {channels.map(item => (
+        <li class="row">
+          <a href={item.href} target="_blank" rel="noopener noreferrer">{item.name}</a>
+          <span class="rule" aria-hidden="true"></span>
+          <span class="handle">{item.handle}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="podcast-banner">
+    <span class="podcast-title">Vitamina A - The Show</span>
+    <span class="podcast-platform">Spotify</span>
+    <a class="podcast-link" href="https://open.spotify.com/show/3NXVANQZm2sh5C669LGWs9" target="_blank" rel="noopener noreferrer">escuchar →</a>
+  </div>
+</Layout>
+
+<style>
+  .page-intro {
+    margin-bottom: 40px;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .breadcrumbs .sep {
+    opacity: 0.5;
+  }
+  .page-title {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    margin: 0 0 20px;
+    color: var(--body-ink);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+  .cta-wrap {
+    margin-top: 14px;
+  }
+  .direct-email-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .direct-email-btn:hover {
+    text-decoration: underline;
+  }
+
+  .channels-section {
+    margin-bottom: 44px;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--muted);
+    margin: 0 0 22px;
+  }
+  .rows {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .row {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .row a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--muted);
+    text-underline-offset: 4px;
+  }
+  .rule {
+    flex: 1 1 auto;
+    min-width: 12px;
+    height: 1px;
+    background: var(--rule);
+    transform: translateY(-4px);
+  }
+  .handle {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .podcast-banner {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .podcast-title {
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .podcast-platform {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  .podcast-link {
+    margin-left: auto;
+    color: #827629;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  :root[data-theme='dark'] .podcast-link {
+    color: var(--accent);
+  }
+</style>

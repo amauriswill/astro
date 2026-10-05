@@ -1,0 +1,242 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const experiences = [
+  ['Desarrollo C++ & Entornos IA Locales', '2026'],
+  ['Makako Animation Studio', '2024'],
+  ['UX/UI para el Sector Público', '2024'],
+  ['Full Stack & Interaction Design', '2023'],
+];
+
+const allBlogPosts = await getCollection('blog');
+const publishedPosts = allBlogPosts
+  .filter(p => p.data.status === 'published')
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const notes = publishedPosts.slice(0, 5);
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('es-ES', {
+    month: 'short',
+    year: 'numeric',
+  }).replace('.', '');
+}
+---
+
+<Layout
+  title="Amauris Willmore - Developer & Product Designer"
+  description="Amauris Willmore, diseñador de producto UI/UX y software enthusiast."
+  activeNav="inicio"
+>
+  <h1 class="sr-only">Amauris Willmore — Diseñador de producto (UI/UX) &amp; Software Enthusiast</h1>
+
+  <section class="intro" aria-label="Sobre mí">
+    <p class="lead">Soy <strong>Amauris Willmore</strong>, diseñador &amp; <em>software enthusiast.</em></p>
+    <p>
+      Escribo código <strong>(A veces la IA me da una mano)</strong>, diseño interfaces y doy vida a ideas visuales. Me interesa descubrir qué sucede cuando cruzamos la ingeniería de software con el diseño de producto <strong>(Usualmente cosas interesantes).</strong>
+    </p>
+    <p>
+      Por eso mi trabajo abarca desde el desarrollo, la arquitectura UI/UX, hasta la producción de motion graphics y 3D.
+    </p>
+    <p>
+      Me interesan el desarrollo de herramientas creativas, sistemas de escritorio y productos que tienen que ser rápidos de verdad <strong>(Porque lidiar con cosas como Adobe® es desesperante).</strong>
+    </p>
+    <p>
+      Aquí es donde comparto las herramientas que construyo y lo que aprendo en el proceso.
+    </p>
+  </section>
+
+  <div class="lists">
+    <section class="content-section" aria-labelledby="experience-title">
+      <h2 id="experience-title">Experiencia</h2>
+      <ul class="rows">
+        {experiences.map(([name, year]) => (
+          <li class="row">
+            <a href={`${base}/proyectos/`}>{name}</a>
+            <span class="rule" aria-hidden="true"></span>
+            <time>{year}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="content-section" aria-labelledby="notes-title">
+      <div class="notes-header">
+        <h2 id="notes-title">Notas</h2>
+        <a href={`${base}/blog/`} class="view-all-link">ver todas ({publishedPosts.length}) →</a>
+      </div>
+      <ul class="rows notes">
+        {notes.map(post => (
+          <li class="row">
+            <a href={`${base}/blog/${post.id}/`}>{post.data.title}</a>
+            <span class="rule" aria-hidden="true"></span>
+            <time>{formatDate(post.data.pubDate)}</time>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="podcast" aria-label="Podcast">
+      <span class="podcast-title">Vitamina A - The Show</span>
+      <span>Spotify</span>
+      <a class="podcast-link" href="https://open.spotify.com/show/3NXVANQZm2sh5C669LGWs9" target="_blank" rel="noopener noreferrer">escuchar →</a>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .intro {
+    color: var(--body-ink);
+    font-size: 18px;
+    line-height: 1.62;
+    animation: phi-fade-in var(--t-reveal) var(--ease-phi) both;
+  }
+  .intro p {
+    margin: 0 0 15px;
+  }
+  .intro .lead {
+    color: var(--ink);
+    margin-bottom: 35px;
+  }
+  .intro strong {
+    color: var(--body-ink);
+    font-weight: 700;
+  }
+  .lists {
+    margin-top: 49px;
+    animation: phi-fade-in var(--t-reveal) var(--ease-phi) var(--t-stagger) both;
+  }
+  .content-section + .content-section {
+    margin-top: 51px;
+  }
+  h2 {
+    margin: 0 0 28px;
+    color: var(--muted);
+    font-size: 17px;
+    font-weight: 400;
+  }
+  .notes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 28px;
+  }
+  .notes-header h2 {
+    margin-bottom: 0;
+  }
+  .view-all-link {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .view-all-link:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .rows {
+    display: grid;
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .row {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 15px;
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .row a {
+    flex: 0 1 auto;
+  }
+  .row a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--muted);
+    text-underline-offset: 4px;
+  }
+  .row .rule {
+    flex: 1 1 auto;
+    min-width: 12px;
+    height: 1px;
+    background: var(--rule);
+    transform: translateY(-4px);
+  }
+  .row time {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .notes {
+    gap: 13px;
+  }
+  .podcast {
+    min-height: 47px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 32px;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .podcast-title {
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  .podcast-link {
+    margin-left: auto;
+    color: #827629;
+  }
+  :root[data-theme='dark'] .podcast-link {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .intro {
+      font-size: 16px;
+      line-height: 1.65;
+    }
+    .intro .lead {
+      margin-bottom: 27px;
+    }
+    .lists {
+      margin-top: 42px;
+    }
+    .content-section + .content-section {
+      margin-top: 42px;
+    }
+    h2 {
+      margin-bottom: 22px;
+    }
+    .row {
+      gap: 9px;
+      font-size: 13px;
+    }
+    .row time {
+      font-size: 11px;
+    }
+    .notes {
+      gap: 12px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .row {
+      font-size: 12px;
+    }
+    .row time {
+      font-size: 10px;
+    }
+    .row .rule {
+      min-width: 8px;
+    }
+  }
+</style>

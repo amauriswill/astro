@@ -1,0 +1,225 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const projects = [
+  {
+    title: 'Custom DAW Engine & Audio Processing',
+    year: '2026',
+    role: 'Desarrollador C++ / Software enthusiast',
+    desc: 'Desarrollo de una estación de trabajo de audio digital (DAW). Implementación de arquitectura multihilo sin bloqueos (lock-free), diseño de interfaz gráfica MVVM con el framework JUCE, renderizado Direct2D y soporte completo para alojamiento de plugins VST3/CLAP.',
+  },
+  {
+    title: 'Local AI Creative Plugins',
+    year: '2026',
+    role: 'Investigador & Desarrollador IA',
+    desc: 'Integración y despliegue de modelos de inteligencia artificial locales en entornos creativos. Uso de llama.cpp y ONNX Runtime (con modelos como MODNet y BriaRMBG) para crear plugins funcionales en software de diseño.',
+  },
+  {
+    title: 'Makako Animation Studio',
+    year: '2024 – Presente',
+    role: 'Diseñador & Animador',
+    desc: 'Creación de piezas narrativas visuales de alto impacto (motion graphics, animación 2D/3D) para marcas nacionales e internacionales utilizando Adobe After Effects, DaVinci Resolve y Blender.',
+  },
+  {
+    title: 'Ministerio de la Presidencia / MEPyD',
+    year: '2023 – 2025',
+    role: 'Diseñador de Producto (UX/UI)',
+    desc: 'A cargo del diseño de producto y la experiencia de usuario para plataformas gubernamentales. Conceptualización de interfaces intuitivas, definición de flujos de usuario (customer journey), diseño de sistemas de diseño y prototipado.',
+  },
+  {
+    title: 'VidRog Solutions',
+    year: '2022 – 2023',
+    role: 'Instructor de Diseño',
+    desc: 'Liderazgo pedagógico guiando a estudiantes a través de los fundamentos del diseño, metodologías de investigación y ejecución de proyectos visuales.',
+  },
+  {
+    title: 'Agencias Creativas & Dirección de Arte',
+    year: '2021 – 2026',
+    role: 'Especialista Multimedia & Director de Arte',
+    desc: 'Trabajo multidisciplinario en agencias como IUS Business Group y WE ARE DESIGNERS BY EDVI. Producción audiovisual, identidades visuales, visualización de datos y diseño editorial.',
+  },
+];
+---
+
+<Layout
+  title="Proyectos & Trayectoria — Amauris Willmore"
+  description="Trayectoria profesional y proyectos destacados en desarrollo C++, diseño UX/UI y producción audiovisual."
+  activeNav="proyectos"
+>
+  <div class="page-intro">
+    <div class="breadcrumbs">
+      <a href={`${base}/`}>inicio</a>
+      <span class="sep">/</span>
+      <span>proyectos</span>
+    </div>
+    <h1 class="page-title">Trayectoria &amp; Proyectos</h1>
+    <p class="subtitle">
+      Un recorrido por mi experiencia en ingeniería de software, diseño de producto (UX/UI) y producción audiovisual.
+    </p>
+  </div>
+
+  <section class="projects-section" aria-label="Lista de proyectos">
+    <ul class="project-list">
+      {projects.map(item => (
+        <li class="project-card">
+          <div class="project-header">
+            <span class="project-title">{item.title}</span>
+            <span class="rule" aria-hidden="true"></span>
+            <time class="project-year">{item.year}</time>
+          </div>
+          <p class="project-role">{item.role}</p>
+          <p class="project-desc">{item.desc}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <div class="podcast-banner">
+    <span class="podcast-title">Vitamina A - The Show</span>
+    <span class="podcast-platform">Spotify</span>
+    <a class="podcast-link" href="https://open.spotify.com/show/3NXVANQZm2sh5C669LGWs9" target="_blank" rel="noopener noreferrer">escuchar →</a>
+  </div>
+</Layout>
+
+<style>
+  .page-intro {
+    margin-bottom: 40px;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .breadcrumbs a:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .breadcrumbs .sep {
+    opacity: 0.5;
+  }
+  .page-title {
+    margin: 0 0 10px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+  .subtitle {
+    margin: 0;
+    color: var(--body-ink);
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 580px;
+  }
+
+  .projects-section {
+    margin-bottom: 40px;
+  }
+  .project-list {
+    display: grid;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .project-card:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+  .project-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  .project-title {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .rule {
+    flex: 1 1 auto;
+    min-width: 12px;
+    height: 1px;
+    background: var(--rule);
+    transform: translateY(-4px);
+  }
+  .project-year {
+    color: var(--muted);
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .project-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: #827629;
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  :root[data-theme='dark'] .project-role {
+    color: var(--accent);
+  }
+  .project-desc {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--body-ink);
+    margin: 0;
+  }
+
+  .podcast-banner {
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .podcast-title {
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .podcast-platform {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+  }
+  .podcast-link {
+    margin-left: auto;
+    color: #827629;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  :root[data-theme='dark'] .podcast-link {
+    color: var(--accent);
+  }
+
+  @media (max-width: 640px) {
+    .project-header {
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .rule {
+      display: none;
+    }
+    .project-year {
+      margin-left: auto;
+    }
+  }
+</style>
